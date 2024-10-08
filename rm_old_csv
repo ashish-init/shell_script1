@@ -1,0 +1,24 @@
+#!/bin/bash
+## shell script to delete old files
+
+path=/tmp
+echo "$path"
+file=/application/scripts/Ashish_Raj/file.txt
+###################################
+
+find "$path" -type f -iname "*.csv" > "$file"
+
+if find "$path" -type f -iname "*.csv" | read; then
+
+        echo "files are found and deleteing them"
+
+        find "$path" -type f -iname "*.csv" -exec rm -f {} +
+
+        echo "deletion successful. deleted files are"
+        cat "$file"
+
+else
+        echo "no files found in path"
+        echo "nothing to delete"
+
+fi
