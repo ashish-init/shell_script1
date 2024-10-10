@@ -1,0 +1,32 @@
+#!/bin/bash
+
+##########all variables##########
+
+##kubeconfig path##
+KUBECONFIG_PATH="/home/ashish/.kube/test_config"
+##pod extraxtor##
+pod_name="kubectl get pods -n ashish --kubeconfig=/home/ashish/.kube/test_config | grep "tunnel" | awk '{print $1}'"
+##variable for mail##
+subject="connection error with tunnel IP"
+message="connection errors observed in IP tunnel 10.10.10.10"
+recipient="ashish.raj@test.mail.com"
+
+
+#env variable to the specified path
+export KUBECONFIG="$KUBECONFIG_PATH"
+
+
+#log parsing
+kubectl exec -n ashish "$pod_name" -- logs since=5m $pod_name | grep -A6 '10.10.10.10' > /home/ashish/connect_test.txt
+
+#search parsed log
+
+if 
+	grep -q "connect timed out" "/home/ashish/connect_test.txt"; then
+            echo "connection errors found"
+            
+		# Send an email
+			echo "$message" | mailx -s "$subject" "$recipient" < /home/ashish/connect_test.txt
+                                else
+					echo "connection errors NOT found"
+fi
