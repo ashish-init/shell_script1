@@ -26,7 +26,7 @@ if
             echo "connection errors found"
             
 		# Send an email
-			echo "$message" | mailx -s "$subject" "$recipient" < /home/ashish/connect_test.txt
+			echo "$message" | mailx -s "$subject" "$recipient" -A /home/ashish/connect_test.txt
                                 else
 					echo "connection errors NOT found"
 fi
